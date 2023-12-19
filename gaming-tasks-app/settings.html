@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<link rel="stylesheet" href="../fontawesome.all.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Bootstrap demo</title>
+		<link href="../bootstrap.min.css" rel="stylesheet" />
+		<script src="../popperjs.js"></script>
+		<script src="../bootstrap.bundle.min.js"></script>
+		
+		<link rel="modulepreload" href="../_app/immutable/entry/start._43ys5qM.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/scheduler.gf8ilvFp.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/singletons.ePeWwxKv.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/index.ywOc5hNA.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/paths.nQi9QrSn.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.YvbdMegw.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/index.jyXLXVhh.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.u7Rxbu0J.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/2.c75KPOcN.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/each.R8bzzU4o.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/6.r5npADeK.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/GamingTaskStore.4yXdEuVg.js">
+	</head>
+	<body>
+		<div class="container pt-3">
+			<div style="display: contents">  <h3 data-svelte-h="svelte-1ef0f8x">My Gaming Task App <sup>(for annoying gaming tasks)</sup></h3> <div class="card mt-4"><div class="card-header"><ul class="nav nav-tabs card-header-tabs"><li class="nav-item"><a class="nav-link active" href="../gaming-tasks-app/main">Tasks</a> </li><li class="nav-item"><a class="nav-link" href="../gaming-tasks-app/settings">Settings</a> </li></ul></div> <div class="card-body"><form><div class="row mb-3"><label for="daily-expiration" class="col-sm-4 col-form-label" data-svelte-h="svelte-1gv4dmi">Time to expire daily tasks</label> <div class="col-sm-8"><input type="time" class="form-control" id="daily-expiration"></div></div> <hr> <div class="row mb-3"><label for="weekly-expiration" class="col-sm-4 col-form-label" data-svelte-h="svelte-7fyimv">Weekday to expire weekly tasks</label> <div class="col-sm-8"><select class="form-select"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></div></div> <div class="row mb-3"><label for="daily-expiration" class="col-sm-4 col-form-label" data-svelte-h="svelte-rti70y">Time to expire weekly tasks</label> <div class="col-sm-8"><input type="time" class="form-control" id="daily-expiration"></div></div></form></div></div> 
+			
+			<script>
+				{
+					__sveltekit_199f0mz = {
+						assets: "/mtrojahn",
+						base: new URL("..", location).pathname.slice(0, -1),
+						env: null
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null,null];
+
+					Promise.all([
+						import("../_app/immutable/entry/start._43ys5qM.js"),
+						import("../_app/immutable/entry/app.YvbdMegw.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2, 6],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+		</div>
+	</body>
+</html>

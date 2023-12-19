@@ -18,11 +18,13 @@
 		<link rel="modulepreload" href="./_app/immutable/entry/app.YvbdMegw.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index.jyXLXVhh.js">
 		<link rel="modulepreload" href="./_app/immutable/nodes/0.u7Rxbu0J.js">
-		<link rel="modulepreload" href="./_app/immutable/nodes/3.Lu-vhyzd.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.c75KPOcN.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/each.R8bzzU4o.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/4.Lu-vhyzd.js">
 	</head>
 	<body>
 		<div class="container pt-3">
-			<div style="display: contents">   
+			<div style="display: contents">  <h3 data-svelte-h="svelte-1ef0f8x">My Gaming Task App <sup>(for annoying gaming tasks)</sup></h3> <div class="card mt-4"><div class="card-header"><ul class="nav nav-tabs card-header-tabs"><li class="nav-item"><a class="nav-link active" href="./gaming-tasks-app/main">Tasks</a> </li><li class="nav-item"><a class="nav-link" href="./gaming-tasks-app/settings">Settings</a> </li></ul></div> <div class="card-body"></div></div> 
 			
 			<script>
 				{
@@ -34,14 +36,14 @@
 
 					const element = document.currentScript.parentElement;
 
-					const data = [null,null];
+					const data = [null,null,null];
 
 					Promise.all([
 						import("./_app/immutable/entry/start._43ys5qM.js"),
 						import("./_app/immutable/entry/app.YvbdMegw.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
-							node_ids: [0, 3],
+							node_ids: [0, 2, 4],
 							data,
 							form: null,
 							error: null
