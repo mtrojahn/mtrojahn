@@ -14,7 +14,9 @@
 	}
 </script>
 
-<h3>My Gaming Task App <sup>(for annoying gaming tasks)</sup></h3>
+<h3>
+	My Gaming Task App <sup>(for annoying gaming tasks)</sup>
+</h3>
 
 <div class="card mt-4">
 	<div class="card-header">
