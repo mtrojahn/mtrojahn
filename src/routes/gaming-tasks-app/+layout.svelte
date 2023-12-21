@@ -1,10 +1,12 @@
 <script>
-	let base = "/gaming-tasks-app"
+	import { base } from "$app/paths"
+
+	let myBase = `${base}/gaming-tasks-app`
 	let active_tab = 0
 
 	const tabs = [
-		{ href: `${base}/main`, name: "Tasks", order: 0 },
-		{ href: `${base}/settings`, name: "Settings", order: 1 }
+		{ href: `${myBase}/main`, name: "Tasks", order: 0 },
+		{ href: `${myBase}/settings`, name: "Settings", order: 1 }
 	]
 
 	const sortedTabs = tabs.slice().sort((a, b) => a.order - b.order)

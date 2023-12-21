@@ -8,6 +8,7 @@
 	$: confs = $settings
 
 	const isDailyExpired = (task) => {
+		const now = luxon.DateTime.local()
 		const splitDailyResetTime = confs.daily_reset_time.split(":")
 		const todaysResetTime = luxon.DateTime.local().set({
 			hour: splitDailyResetTime[0],
@@ -15,10 +16,11 @@
 			second: 0
 		})
 		const lastReset = luxon.DateTime.fromISO(task.last_reset)
-		return lastReset < todaysResetTime && task.completed
+		return now > todaysResetTime && lastReset < todaysResetTime && task.completed
 	}
 
 	const isWeeklyExpired = (task) => {
+		const now = luxon.DateTime.local()
 		if (confs.weekly_reset_day !== luxon.DateTime.local().weekday) {
 			return false
 		}
@@ -29,7 +31,7 @@
 			second: 0
 		})
 		const lastReset = luxon.DateTime.fromISO(task.last_reset)
-		return lastReset < weeklyResetTime && task.completed
+		return now > weeklyResetTime && lastReset < weeklyResetTime && task.completed
 	}
 
 	onMount(() => {
