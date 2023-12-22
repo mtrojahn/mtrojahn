@@ -77,15 +77,14 @@
 	<div class="row mx-1 mt-4">
 		<table class="table table-striped">
 			<tr>
+				<th style="width: 150px;">Completed</th>
 				<th>Task</th>
-				<th class="text-end">Completed</th>
 				<th style="width: 400px"></th>
 			</tr>
 			<tbody>
 				{#each daily_tasks as task}
 					<tr>
-						<td>{task.name}</td>
-						<td class="text-end">
+						<td>
 							<input
 								class="form-check-input"
 								type="checkbox"
@@ -93,6 +92,7 @@
 								checked={task.completed}
 								on:change={() => toggleCompleted(task.id)} />
 						</td>
+						<td>{task.name}</td>
 						<td class="text-end">
 							<i
 								class="fa fa-trash ms-4"
@@ -129,15 +129,14 @@
 	<div class="row mx-1 mt-4">
 		<table class="table table-striped">
 			<tr>
+				<th style="width: 150px;">Completed</th>
 				<th>Task</th>
-				<th class="text-end">Completed</th>
 				<th style="width: 400px"></th>
 			</tr>
 			<tbody>
 				{#each weekly_tasks as task}
 					<tr>
-						<td>{task.name}</td>
-						<td class="text-end">
+						<td>
 							<input
 								class="form-check-input"
 								type="checkbox"
@@ -145,6 +144,7 @@
 								checked={task.completed}
 								on:change={() => toggleCompleted(task.id)} />
 						</td>
+						<td>{task.name}</td>
 						<td class="text-end">
 							<i
 								class="fa fa-trash ms-4"
