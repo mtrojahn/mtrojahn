@@ -75,29 +75,35 @@
 </div>
 <form>
 	<div class="row mx-1 mt-4">
-		<table class="table">
+		<table class="table table-striped">
 			<tr>
 				<th>Task</th>
 				<th class="text-end">Completed</th>
 				<th style="width: 400px"></th>
 			</tr>
-			{#each daily_tasks as task}
-				<tr>
-					<td>{task.name}</td>
-					<td class="text-end">
-						<input
-							class="form-check-input"
-							type="checkbox"
-							id={task.id}
-							checked={task.completed}
-							on:change={() => toggleCompleted(task.id)} />
-					</td>
-					<td class="text-end">
-						<i class="fa fa-trash ms-4" aria-hidden="true" on:click={() => deleteTask(task.id)} style="cursor: pointer">
-						</i>
-					</td>
-				</tr>
-			{/each}
+			<tbody>
+				{#each daily_tasks as task}
+					<tr>
+						<td>{task.name}</td>
+						<td class="text-end">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id={task.id}
+								checked={task.completed}
+								on:change={() => toggleCompleted(task.id)} />
+						</td>
+						<td class="text-end">
+							<i
+								class="fa fa-trash ms-4"
+								aria-hidden="true"
+								on:click={() => deleteTask(task.id)}
+								style="cursor: pointer">
+							</i>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
 		</table>
 	</div>
 </form>
@@ -121,29 +127,35 @@
 </div>
 <form>
 	<div class="row mx-1 mt-4">
-		<table class="table">
+		<table class="table table-striped">
 			<tr>
 				<th>Task</th>
 				<th class="text-end">Completed</th>
 				<th style="width: 400px"></th>
 			</tr>
-			{#each weekly_tasks as task}
-				<tr>
-					<td>{task.name}</td>
-					<td class="text-end">
-						<input
-							class="form-check-input"
-							type="checkbox"
-							id={task.id}
-							checked={task.completed}
-							on:change={() => toggleCompleted(task.id)} />
-					</td>
-					<td class="text-end">
-						<i class="fa fa-trash ms-4" aria-hidden="true" on:click={() => deleteTask(task.id)} style="cursor: pointer">
-						</i>
-					</td>
-				</tr>
-			{/each}
+			<tbody>
+				{#each weekly_tasks as task}
+					<tr>
+						<td>{task.name}</td>
+						<td class="text-end">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id={task.id}
+								checked={task.completed}
+								on:change={() => toggleCompleted(task.id)} />
+						</td>
+						<td class="text-end">
+							<i
+								class="fa fa-trash ms-4"
+								aria-hidden="true"
+								on:click={() => deleteTask(task.id)}
+								style="cursor: pointer">
+							</i>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
 		</table>
 	</div>
 </form>
