@@ -43,28 +43,15 @@ const addTask = (name, frequency) => {
 			completed: false,
 			last_reset: luxon.DateTime.local().set({ second: 0 }).toISO()
 		}
-		const newTaskList = [...tasks, newTask]
-		localStorage.setItem("tasks", JSON.stringify(newTaskList))
-		return newTaskList
+		const sorted = [...tasks, newTask].sort((a, b) => a.name.localeCompare(b.name))
+		localStorage.setItem("tasks", JSON.stringify(sorted))
+		return sorted
 	})
 }
 
 const deleteTask = (id) => {
 	tasks.update((tasks) => {
 		const newTaskList = tasks.filter((task) => task.id !== id)
-		localStorage.setItem("tasks", JSON.stringify(newTaskList))
-		return newTaskList
-	})
-}
-
-const updateTask = (id, task) => {
-	tasks.update((tasks) => {
-		const newTaskList = tasks.map((t) => {
-			if (t.id === id) {
-				return task
-			}
-			return t
-		})
 		localStorage.setItem("tasks", JSON.stringify(newTaskList))
 		return newTaskList
 	})
@@ -86,4 +73,4 @@ const toggleCompleted = (id) => {
 	})
 }
 
-export { tasks, addTask, toggleCompleted, deleteTask, settings, updateTask }
+export { tasks, addTask, toggleCompleted, deleteTask, settings }

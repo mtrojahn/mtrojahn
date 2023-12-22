@@ -45,7 +45,8 @@
 			}
 			return task
 		})
-		tasks.set($tasks)
+		const sorted = $tasks.sort((a, b) => a.name.localeCompare(b.name))
+		tasks.set(sorted)
 	})
 
 	let new_daily_name = ""
