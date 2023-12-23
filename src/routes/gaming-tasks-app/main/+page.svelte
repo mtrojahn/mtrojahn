@@ -1,10 +1,12 @@
 <script>
-	import { addTask, deleteTask, settings, tasks, toggleCompleted } from "$lib/stores/GamingTaskStore.js"
 	import * as luxon from "luxon"
 	import { onMount } from "svelte"
+	import { addTask, deleteTask, settings, tasks, toggleCompleted } from "$lib/stores/GamingTaskStore.js"
 
-	$: daily_tasks = $tasks.filter((task) => task.frequency === "daily")
-	$: weekly_tasks = $tasks.filter((task) => task.frequency === "weekly")
+	$: all_tasks = $tasks
+		.filter((task) => ["DAILY", "WEEKLY"].includes(task.frequency))
+		.sort((a, b) => a.name.localeCompare(b.name) && a.frequency.localeCompare(b.frequency))
+		.concat($tasks.filter((task) => task.frequency === "PERMANENT"))
 	$: confs = $settings
 
 	const isDailyExpired = (task) => {
@@ -45,118 +47,64 @@
 			}
 			return task
 		})
-		const sorted = $tasks.sort((a, b) => a.name.localeCompare(b.name))
-		tasks.set(sorted)
+		tasks.set($tasks)
 	})
 
-	let new_daily_name = ""
-	let new_weekly_name = ""
+	let new_task_type = "DAILY"
+	let new_task_name = ""
 
 	const add = (name, frequency) => {
 		addTask(name, frequency)
-		new_daily_name = ""
-		new_weekly_name = ""
+		new_task_type = "DAILY"
+		new_task_name = ""
 	}
 </script>
 
-<div class="d-flex flex-row justify-content-between">
-	<h6>Daily Tasks</h6>
-	<div class="d-flex flex-row">
-		<input
-			id="daily_task_name"
-			type="text"
-			class="form-control form-control-sm"
-			placeholder="New Task"
-			bind:value={new_daily_name}
-			style="width: 300px" />
-		<button type="button" class="btn btn-primary btn-sm ms-3" on:click={() => add(new_daily_name, "daily")}>
-			<i class="fa fa-plus" aria-hidden="true"></i>
-		</button>
-	</div>
+<div class="d-flex flex-row justify-content-end">
+	<input
+		type="text"
+		class="form-control form-control-sm"
+		placeholder="New Task"
+		bind:value={new_task_name}
+		style="max-width: 300px" />
+	<select class="form-select form-select-sm ms-3" style="max-width: 150px" bind:value={new_task_type}>
+		<option value="DAILY">Daily</option>
+		<option value="WEEKLY">Weekly</option>
+		<option value="PERMANENT">Permanent</option>
+	</select>
+	<button type="button" class="btn btn-primary btn-sm ms-3" on:click={() => add(new_task_name, new_task_type)}>
+		<i class="fa fa-plus" aria-hidden="true"></i>
+	</button>
 </div>
-<form>
-	<div class="row mx-1 mt-4">
-		<table class="table table-striped">
-			<tr>
-				<th style="width: 150px;">Completed</th>
-				<th>Task</th>
-				<th style="width: 400px"></th>
-			</tr>
-			<tbody>
-				{#each daily_tasks as task}
-					<tr>
-						<td>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								id={task.id}
-								checked={task.completed}
-								on:change={() => toggleCompleted(task.id)} />
-						</td>
-						<td>{task.name}</td>
-						<td class="text-end">
-							<i
-								class="fa fa-trash ms-4"
-								aria-hidden="true"
-								on:click={() => deleteTask(task.id)}
-								style="cursor: pointer">
-							</i>
-						</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
-</form>
 
-<hr class="my-4" />
-
-<div class="d-flex flex-row justify-content-between">
-	<h6>Weekly Tasks</h6>
-	<div class="d-flex flex-row">
-		<input
-			id="daily_task_name"
-			type="text"
-			class="form-control form-control-sm"
-			placeholder="New Task"
-			bind:value={new_weekly_name}
-			style="width: 300px" />
-		<button type="button" class="btn btn-primary btn-sm ms-3" on:click={() => add(new_weekly_name, "weekly")}>
-			<i class="fa fa-plus" aria-hidden="true"></i>
-		</button>
-	</div>
+<h6>Tasks</h6>
+<div class="row mx-1 mt-4">
+	<table class="table table-striped">
+		<tr>
+			<th style="width: 150px;">Done</th>
+			<th>Task</th>
+			<th class="text-end">Frequency</th>
+			<th style="width: 400px"></th>
+		</tr>
+		<tbody>
+			{#each all_tasks as task}
+				<tr>
+					<td>
+						<input
+							class="form-check-input"
+							type="checkbox"
+							id={task.id}
+							checked={task.completed}
+							on:change={() => toggleCompleted(task.id)} />
+					</td>
+					<td>{task.name}</td>
+					<td class="text-end">{task.frequency}</td>
+					<td class="text-end">
+						<i class="fa fa-trash ms-4" aria-hidden="true" on:click={() => deleteTask(task.id)} style="cursor: pointer">
+						</i>
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 </div>
-<form>
-	<div class="row mx-1 mt-4">
-		<table class="table table-striped">
-			<tr>
-				<th style="width: 150px;">Completed</th>
-				<th>Task</th>
-				<th style="width: 400px"></th>
-			</tr>
-			<tbody>
-				{#each weekly_tasks as task}
-					<tr>
-						<td>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								id={task.id}
-								checked={task.completed}
-								on:change={() => toggleCompleted(task.id)} />
-						</td>
-						<td>{task.name}</td>
-						<td class="text-end">
-							<i
-								class="fa fa-trash ms-4"
-								aria-hidden="true"
-								on:click={() => deleteTask(task.id)}
-								style="cursor: pointer">
-							</i>
-						</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
-</form>

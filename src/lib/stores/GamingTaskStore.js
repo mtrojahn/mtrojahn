@@ -34,7 +34,7 @@ tasks.subscribe((tasks) => {
 	localStorage.setItem("tasks", JSON.stringify(tasks))
 })
 
-const addTask = (name, frequency) => {
+const addTask = (name, frequency = null) => {
 	tasks.update((tasks) => {
 		const newTask = {
 			id: uuid(),
