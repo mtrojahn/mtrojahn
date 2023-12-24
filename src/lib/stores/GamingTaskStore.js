@@ -63,7 +63,8 @@ const toggleCompleted = (id) => {
 			if (task.id === id) {
 				return {
 					...task,
-					completed: !task.completed
+					completed: !task.completed,
+          last_reset: luxon.DateTime.local().set({ second: 0 }).toISO()
 				}
 			}
 			return task
