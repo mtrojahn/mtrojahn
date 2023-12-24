@@ -47,7 +47,6 @@
 			}
 			return task
 		})
-		console.log(parsed)
 		tasks.set(parsed)
 	})
 
