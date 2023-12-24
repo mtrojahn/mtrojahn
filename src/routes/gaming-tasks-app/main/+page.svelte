@@ -37,17 +37,18 @@
 	}
 
 	onMount(() => {
-		$tasks.map((task) => {
+		const parsed = $tasks.map((task) => {
 			if (
-				(task.frequency === "daily" && isDailyExpired(task)) ||
-				(task.frequency === "weekly" && isWeeklyExpired(task))
+				(task.frequency === "DAILY" && isDailyExpired(task)) ||
+				(task.frequency === "WEEKLY" && isWeeklyExpired(task))
 			) {
 				task.completed = false
 				task.last_reset = luxon.DateTime.local().set({ second: 0 }).toISO()
 			}
 			return task
 		})
-		tasks.set($tasks)
+		console.log(parsed)
+		tasks.set(parsed)
 	})
 
 	let new_task_type = "DAILY"
