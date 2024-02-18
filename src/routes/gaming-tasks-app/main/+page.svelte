@@ -12,13 +12,17 @@
 	const isDailyExpired = (task) => {
 		const now = luxon.DateTime.local()
 		const splitDailyResetTime = confs.daily_reset_time.split(":")
-		const todaysResetTime = luxon.DateTime.local().set({
+
+		let lastResetTime = luxon.DateTime.local().set({
 			hour: splitDailyResetTime[0],
 			minute: splitDailyResetTime[1],
 			second: 0
 		})
-		const lastReset = luxon.DateTime.fromISO(task.last_reset)
-		return now > todaysResetTime && lastReset < todaysResetTime && task.completed
+		if (lastResetTime > now) {
+			lastResetTime = lastResetTime.minus({ days: 1 })
+		}
+		const taskLastReset = luxon.DateTime.fromISO(task.last_reset)
+		return taskLastReset < lastResetTime && task.completed
 	}
 
 	const isWeeklyExpired = (task) => {
@@ -27,13 +31,16 @@
 			return false
 		}
 		const splitWeeklyResetTime = confs.weekly_reset_time.split(":")
-		const weeklyResetTime = luxon.DateTime.local().set({
+		let lastWeekResetTime = luxon.DateTime.local().set({
 			hour: splitWeeklyResetTime[0],
 			minute: splitWeeklyResetTime[1],
 			second: 0
 		})
-		const lastReset = luxon.DateTime.fromISO(task.last_reset)
-		return now > weeklyResetTime && lastReset < weeklyResetTime && task.completed
+		if (lastWeekResetTime > now) {
+			lastWeekResetTime = lastWeekResetTime.minus({ days: 7 })
+		}
+		const taskLastReset = luxon.DateTime.fromISO(task.last_reset)
+		return taskLastReset < lastWeekResetTime && task.completed
 	}
 
 	onMount(() => {
