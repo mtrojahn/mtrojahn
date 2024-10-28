@@ -1,7 +1,7 @@
 <script>
 	import * as luxon from "luxon"
 	import { onMount } from "svelte"
-	import { addTask, deleteTask, settings, tasks, toggleCompleted } from "$lib/stores/GamingTaskStore.js"
+	import { addTask, deleteTask, settings, tasks, toggleCompleted, updateAmount } from "$lib/stores/GamingTaskStore.js"
 
 	$: all_tasks = $tasks
 		.filter((task) => ["DAILY", "WEEKLY"].includes(task.frequency))
@@ -62,7 +62,7 @@
 
 	const add = (name, frequency) => {
 		addTask(name, frequency)
-		new_task_type = "DAILY"
+		new_task_type = frequency
 		new_task_name = ""
 	}
 </script>
@@ -88,10 +88,11 @@
 <div class="row mx-1 mt-4">
 	<table class="table table-striped">
 		<tr>
-			<th style="width: 150px;">Done</th>
+			<th scope="col" style="width: 150px;">Done</th>
 			<th>Task</th>
-			<th class="text-end">Frequency</th>
-			<th style="width: 400px"></th>
+			<th scope="col" class="text-end">Amount</th>
+			<th scope="col" class="text-end">Frequency</th>
+			<th scope="col" style="width: 400px"></th>
 		</tr>
 		<tbody>
 			{#each all_tasks as task}
@@ -105,6 +106,17 @@
 							on:change={() => toggleCompleted(task.id)} />
 					</td>
 					<td>{task.name}</td>
+					{#if task.amount && task.amount > 0}
+						<td class="text-end">
+							<input
+								type="number"
+								class="num"
+								bind:value={task.amount}
+								on:change={() => updateAmount(task.id, task.amount)} />
+						</td>
+					{:else}
+						<td></td>
+					{/if}
 					<td class="text-end">{task.frequency}</td>
 					<td class="text-end">
 						<i class="fa fa-trash ms-4" aria-hidden="true" on:click={() => deleteTask(task.id)} style="cursor: pointer">
@@ -115,3 +127,15 @@
 		</tbody>
 	</table>
 </div>
+
+<style>
+	th {
+		padding: 0.5rem 0.5rem;
+	}
+	.num {
+		width: 100px;
+		background-color: transparent;
+		border: 0;
+		text-align: end;
+	}
+</style>

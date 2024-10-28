@@ -35,10 +35,17 @@ tasks.subscribe((tasks) => {
 })
 
 const addTask = (name, frequency = null) => {
+	const match = name.match(/^(.+?)\s*x\s*(\d+)$/i)
+	let amount = 1
+	if (match) {
+		name = match[1].trim()
+		amount = parseInt(match[2])
+	}
 	tasks.update((tasks) => {
 		const newTask = {
 			id: uuid(),
 			name: name.trim(),
+			amount,
 			frequency,
 			completed: false,
 			last_reset: luxon.DateTime.local().set({ second: 0 }).toISO()
@@ -74,4 +81,22 @@ const toggleCompleted = (id) => {
 	})
 }
 
-export { tasks, addTask, toggleCompleted, deleteTask, settings }
+const updateAmount = (id, amount) => {
+	tasks.update((tasks) => {
+		const newTaskList = tasks.map((task) => {
+			if (task.id === id) {
+				const completed = task.amount === 0
+				return {
+					...task,
+					amount,
+					completed
+				}
+			}
+			return task
+		})
+		localStorage.setItem("tasks", JSON.stringify(newTaskList))
+		return newTaskList
+	})
+}
+
+export { tasks, addTask, toggleCompleted, deleteTask, updateAmount, settings }
