@@ -6,7 +6,7 @@
 	$: all_tasks = $tasks
 		.filter((task) => ["DAILY", "WEEKLY"].includes(task.frequency))
 		.sort((a, b) => a.name.localeCompare(b.name) && a.frequency.localeCompare(b.frequency))
-		.concat($tasks.filter((task) => task.frequency === "PERMANENT"))
+		.concat($tasks.filter((task) => task.frequency === "NEVER"))
 	$: confs = $settings
 
 	const isDailyExpired = (task) => {
@@ -77,7 +77,7 @@
 	<select class="form-select form-select-sm ms-3" style="max-width: 150px" bind:value={new_task_type}>
 		<option value="DAILY">Daily</option>
 		<option value="WEEKLY">Weekly</option>
-		<option value="PERMANENT">Permanent</option>
+		<option value="NEVER">Never</option>
 	</select>
 	<button type="button" class="btn btn-primary btn-sm ms-3" on:click={() => add(new_task_name, new_task_type)}>
 		<i class="fa fa-plus" aria-hidden="true"></i>
@@ -91,7 +91,7 @@
 			<th scope="col" style="width: 150px;">Done</th>
 			<th>Task</th>
 			<th scope="col" class="text-end">Amount</th>
-			<th scope="col" class="text-end">Frequency</th>
+			<th scope="col" class="text-end">Reset Frequency</th>
 			<th scope="col" style="width: 400px"></th>
 		</tr>
 		<tbody>
