@@ -36,7 +36,7 @@ tasks.subscribe((tasks) => {
 
 const addTask = (name, frequency = null) => {
 	const match = name.match(/^(.+?)\s*x\s*(\d+)$/i)
-	let amount = 1
+	let amount = null
 	if (match) {
 		name = match[1].trim()
 		amount = parseInt(match[2])
