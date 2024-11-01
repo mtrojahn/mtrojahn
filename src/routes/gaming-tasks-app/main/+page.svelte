@@ -59,6 +59,7 @@
 			) {
 				task.completed = false
 				task.last_reset = luxon.DateTime.local().set({ second: 0 }).toISO()
+				task.amount = task.original_amount
 			}
 			return task
 		})

@@ -46,6 +46,7 @@ const addTask = (name, frequency = null) => {
 			id: uuid(),
 			name: name.trim(),
 			amount,
+			original_amount: amount,
 			frequency,
 			completed: false,
 			last_reset: luxon.DateTime.local().set({ second: 0 }).toISO()
