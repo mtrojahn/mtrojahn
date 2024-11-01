@@ -1,7 +1,15 @@
 <script>
 	import * as luxon from "luxon"
 	import { onMount } from "svelte"
-	import { addTask, deleteTask, settings, tasks, toggleCompleted, updateAmount } from "$lib/stores/GamingTaskStore.js"
+	import {
+		addTask,
+		deleteTask,
+		settings,
+		tasks,
+		toggleCompleted,
+		updateAmount,
+		updateName
+	} from "$lib/stores/GamingTaskStore.js"
 
 	$: all_tasks = $tasks
 		.filter((task) => ["DAILY", "WEEKLY"].includes(task.frequency))
@@ -73,6 +81,7 @@
 		class="form-control form-control-sm"
 		placeholder="New Task"
 		bind:value={new_task_name}
+		on:keyup={(e) => e.key === "Enter" && add(new_task_name, new_task_type)}
 		style="max-width: 300px" />
 	<select class="form-select form-select-sm ms-3" style="max-width: 150px" bind:value={new_task_type}>
 		<option value="DAILY">Daily</option>
@@ -105,14 +114,16 @@
 							checked={task.completed}
 							on:change={() => toggleCompleted(task.id)} />
 					</td>
-					<td>{task.name}</td>
+					<td>
+						<input class="txt" type="text" bind:value={task.name} on:blur={() => updateName(task.id, task.name)} />
+					</td>
 					{#if task.amount && task.amount > 0}
 						<td class="text-end">
 							<input
 								type="number"
 								class="num"
 								bind:value={task.amount}
-								on:change={() => updateAmount(task.id, task.amount)} />
+								on:blur={() => updateAmount(task.id, task.amount)} />
 						</td>
 					{:else}
 						<td></td>
@@ -131,6 +142,10 @@
 <style>
 	th {
 		padding: 0.5rem 0.5rem;
+	}
+	.txt {
+		background-color: transparent;
+		border: 0;
 	}
 	.num {
 		width: 100px;

@@ -99,4 +99,20 @@ const updateAmount = (id, amount) => {
 	})
 }
 
-export { tasks, addTask, toggleCompleted, deleteTask, updateAmount, settings }
+const updateName = (id, name) => {
+	tasks.update((tasks) => {
+		const newTaskList = tasks.map((task) => {
+			if (task.id === id) {
+				return {
+					...task,
+					name
+				}
+			}
+			return task
+		})
+		localStorage.setItem("tasks", JSON.stringify(newTaskList))
+		return newTaskList
+	})
+}
+
+export { tasks, addTask, toggleCompleted, deleteTask, updateAmount, updateName, settings }
