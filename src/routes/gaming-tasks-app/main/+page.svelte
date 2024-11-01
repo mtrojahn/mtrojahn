@@ -97,11 +97,11 @@
 <div class="row mx-1 mt-4">
 	<table class="table table-striped">
 		<tr>
-			<th scope="col" style="width: 150px;">Done</th>
+			<th scope="col" style="width: 100px;">Done</th>
 			<th>Task</th>
-			<th scope="col" class="text-end">Amount</th>
-			<th scope="col" class="text-end">Reset Frequency</th>
-			<th scope="col" style="width: 400px"></th>
+			<th scope="col" class="text-end" style="width: 100px">Amount</th>
+			<th scope="col" class="text-end" style="width: 150px">Reset Frequency</th>
+			<th scope="col" style="width: 100px"></th>
 		</tr>
 		<tbody>
 			{#each all_tasks as task}
@@ -146,6 +146,7 @@
 	.txt {
 		background-color: transparent;
 		border: 0;
+		width: 100%;
 	}
 	.num {
 		width: 100px;
