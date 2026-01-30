@@ -2,24 +2,12 @@
 	import * as luxon from "luxon"
 	import { onMount } from "svelte"
 	import { loadTimeEntries, loadProjects, mappings } from "$lib/stores/ClockifyExportStore.js"
+	import { formatDuration } from "$lib/helpers/strings.js"
 
 	let query_date = luxon.DateTime.now().toISODate()
 	let entries = []
 	let loading = false
 	let projects = []
-
-	// Parse PT5H30M format to readable string
-	function formatDuration(durationString) {
-		if (!durationString) return "0 min"
-
-		const duration = luxon.Duration.fromISO(durationString)
-		const hours = Math.floor(duration.as("hours"))
-		const minutes = Math.floor(duration.as("minutes") % 60)
-
-		if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`
-		if (hours > 0) return `${hours}h`
-		return `${minutes}m`
-	}
 
 	function getProjectName(projectId) {
 		const project = projects.find((p) => p.id === projectId)
@@ -83,8 +71,10 @@
 					</div>
 				</div>
 				<small class="text-muted">
-					{luxon.DateTime.fromISO(entry.timeInterval.start).toFormat("HH:mm")} -
-					{entry.timeInterval.end ? luxon.DateTime.fromISO(entry.timeInterval.end).toFormat("HH:mm") : "running"}
+					{luxon.DateTime.fromISO(entry.timeInterval.start, { setZone: "utc" }).toFormat("HH:mm")} -
+					{entry.timeInterval.end
+						? luxon.DateTime.fromISO(entry.timeInterval.end, { setZone: "utc" }).toFormat("HH:mm")
+						: "running"}
 					({formatDuration(entry.timeInterval.duration)})
 				</small>
 			</li>
@@ -93,4 +83,3 @@
 {:else}
 	<p class="text-muted">No entries found for {query_date}</p>
 {/if}
-

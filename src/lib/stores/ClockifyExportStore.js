@@ -1,10 +1,12 @@
 import { writable } from "svelte/store"
 import { browser } from "$app/environment"
-import { DateTime } from "luxon"
+import * as luxon from "luxon"
+
 import ky from "ky"
 
 const CLOCKIFY_API = "https://api.clockify.me/api/v1"
 let PROJECTS_CACHE = []
+let ENTRIES_CACHE = []
 
 const clockifyGet = async (endpoint, options = {}) => {
 	const { token } = loadAuth()
@@ -64,24 +66,26 @@ auth.subscribe((auth) => {
 })
 
 const loadTimeEntries = async (date) => {
-	console.log("Loading time entries for date:", date)
 	if (!browser) return []
 
 	const { workspace, user } = loadAuth()
 	if (!workspace || !user) return []
 
-	const dt = DateTime.fromISO(date + "T00:00:00Z")
+	// Force UTC zone instead of local browser timezone
+	const dt = luxon.DateTime.fromISO(date + "T00:00:00Z", { setZone: "utc" })
 	const start = dt.startOf("day")
 	const end = dt.endOf("day")
 
 	try {
-		return await clockifyGet(`/workspaces/${workspace}/user/${user}/time-entries`, {
+		const entries = await clockifyGet(`/workspaces/${workspace}/user/${user}/time-entries`, {
 			searchParams: {
 				start: start.toISO(),
 				end: end.toISO(),
 				pageSize: 5000
 			}
 		})
+		ENTRIES_CACHE = entries
+		return entries
 	} catch (error) {
 		console.error("Failed to load time entries:", error)
 		return []
@@ -114,4 +118,35 @@ const loadProjects = async (forceRefresh = false) => {
 	}
 }
 
-export { auth, loadTimeEntries, loadProjects, mappings, addMapping, deleteMapping }
+function splitIntoChunks(entry, chunkMinutes = 30) {
+	const start = luxon.DateTime.fromISO(entry.timeInterval.start, { setZone: "utc" })
+	const end = luxon.DateTime.fromISO(entry.timeInterval.end, { setZone: "utc" })
+	const chunkMs = chunkMinutes * 60 * 1000
+
+	const chunks = []
+	let current = start
+
+	while (current < end) {
+		const chunkEnd = luxon.DateTime.fromMillis(Math.min(current.toMillis() + chunkMs, end.toMillis()), {
+			setZone: "utc"
+		})
+
+		chunks.push({
+			description: entry.description,
+			projectId: entry.projectId,
+			start: current,
+			end: chunkEnd
+		})
+
+		current = chunkEnd
+	}
+
+	return chunks
+}
+
+const convertCurrentEntriesToChunks = () => {
+	const entries = ENTRIES_CACHE.map((entry) => splitIntoChunks(entry)).flat()
+	return entries
+}
+
+export { auth, loadTimeEntries, loadProjects, mappings, addMapping, deleteMapping, convertCurrentEntriesToChunks }
