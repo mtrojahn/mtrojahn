@@ -25,18 +25,52 @@ const loadAuth = () => {
 
 const auth = writable(loadAuth())
 
+const loadMappings = () => {
+	if (!browser) return []
+	return JSON.parse(localStorage.getItem("clockify_mappings") || "[]")
+}
+
+const mappings = writable(loadMappings())
+
+mappings.subscribe((mappings) => {
+	if (!browser) return
+	localStorage.setItem("clockify_mappings", JSON.stringify(mappings))
+})
+
+const addMapping = (project_name, work_type, task_activity) => {
+	mappings.update((mappings) => {
+		const newMapping = {
+			project_name: project_name.trim(),
+			work_type: work_type.trim(),
+			task_activity: task_activity.trim()
+		}
+		const sorted = [...mappings, newMapping].sort((a, b) => a.project_name.localeCompare(b.project_name))
+		localStorage.setItem("clockify_mappings", JSON.stringify(sorted))
+		return sorted
+	})
+}
+
+const deleteMapping = (project_name) => {
+	mappings.update((mappings) => {
+		const updated = mappings.filter((m) => m.project_name !== project_name)
+		localStorage.setItem("clockify_mappings", JSON.stringify(updated))
+		return updated
+	})
+}
+
 auth.subscribe((auth) => {
 	if (!browser) return
 	localStorage.setItem("clockify_auth", JSON.stringify(auth))
 })
 
 const loadTimeEntries = async (date) => {
+	console.log("Loading time entries for date:", date)
 	if (!browser) return []
 
 	const { workspace, user } = loadAuth()
 	if (!workspace || !user) return []
 
-	const dt = DateTime.fromISO(date, { zone: "local" }).toUTC()
+	const dt = DateTime.fromISO(date + "T00:00:00Z")
 	const start = dt.startOf("day")
 	const end = dt.endOf("day")
 
@@ -80,4 +114,4 @@ const loadProjects = async (forceRefresh = false) => {
 	}
 }
 
-export { auth, loadTimeEntries, loadProjects }
+export { auth, loadTimeEntries, loadProjects, mappings, addMapping, deleteMapping }
