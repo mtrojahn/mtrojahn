@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"ky": "^1.14.3",
 		"luxon": "^3.5.0",
 		"uuid-v4": "^0.1.0"
 	},
