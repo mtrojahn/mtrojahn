@@ -24,7 +24,7 @@ const selectedDate = writable(luxon.DateTime.now().minus({ days: 1 }).toISODate(
 
 const loadAuth = () => {
 	if (!browser) return {}
-	return JSON.parse(localStorage.getItem("clockify_auth") || JSON.stringify({ token: "", workspace: "", user: "" }))
+	return JSON.parse(localStorage.getItem("clockify_auth") || JSON.stringify({ token: "", workspace: "659c1fc8b180a1576ddf8aab", user: "" }))
 }
 
 const auth = writable(loadAuth())
