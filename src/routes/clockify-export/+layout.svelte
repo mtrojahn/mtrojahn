@@ -6,7 +6,6 @@
 
 	const tabs = [
 		{ href: `${myBase}/main`, name: "Clockify Data", order: 0 },
-		{ href: `${myBase}/export`, name: "Export", order: 1 },
 		{ href: `${myBase}/settings`, name: "Settings", order: 2 }
 	]
 

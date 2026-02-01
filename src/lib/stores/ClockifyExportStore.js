@@ -27,6 +27,11 @@ const loadAuth = () => {
 
 const auth = writable(loadAuth())
 
+auth.subscribe((auth) => {
+	if (!browser) return
+	localStorage.setItem("clockify_auth", JSON.stringify(auth))
+})
+
 const loadMappings = () => {
 	if (!browser) return []
 	return JSON.parse(localStorage.getItem("clockify_mappings") || "[]")
@@ -60,11 +65,6 @@ const deleteMapping = (project_name) => {
 	})
 }
 
-auth.subscribe((auth) => {
-	if (!browser) return
-	localStorage.setItem("clockify_auth", JSON.stringify(auth))
-})
-
 const loadTimeEntries = async (date) => {
 	if (!browser) return []
 
@@ -84,6 +84,9 @@ const loadTimeEntries = async (date) => {
 				pageSize: 5000
 			}
 		})
+		// sort by start time ascending
+		entries.sort((a, b) => new Date(a.timeInterval.start) - new Date(b.timeInterval.start))
+
 		ENTRIES_CACHE = entries
 		return entries
 	} catch (error) {
@@ -119,17 +122,16 @@ const loadProjects = async (forceRefresh = false) => {
 }
 
 function splitIntoChunks(entry, chunkMinutes = 30) {
-	const start = luxon.DateTime.fromISO(entry.timeInterval.start, { setZone: "utc" })
-	const end = luxon.DateTime.fromISO(entry.timeInterval.end, { setZone: "utc" })
+	const start = luxon.DateTime.fromISO(entry.timeInterval.start, { zone: "utc" })
+	const end = luxon.DateTime.fromISO(entry.timeInterval.end, { zone: "utc" })
 	const chunkMs = chunkMinutes * 60 * 1000
 
 	const chunks = []
 	let current = start
 
 	while (current < end) {
-		const chunkEnd = luxon.DateTime.fromMillis(Math.min(current.toMillis() + chunkMs, end.toMillis()), {
-			setZone: "utc"
-		})
+		const next = current.plus({ minutes: chunkMinutes })
+		const chunkEnd = next < end ? next : end
 
 		chunks.push({
 			description: entry.description,
