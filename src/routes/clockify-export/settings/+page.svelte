@@ -47,9 +47,9 @@
 <div class="row mx-1 mt-4">
 	<table class="table table-striped">
 		<tr>
-			<th scope="col">Project Name</th>
-			<th scope="col">Task Name</th>
-			<th scope="col">Task Activity</th>
+			<th scope="col">Clockify Project Name</th>
+			<th scope="col">C5 Work Type</th>
+			<th scope="col">C5 Task/Activity</th>
 			<th scope="col" style="width: 100px"></th>
 		</tr>
 		<tbody>
