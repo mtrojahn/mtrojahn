@@ -20,6 +20,8 @@ const clockifyGet = async (endpoint, options = {}) => {
 		.json()
 }
 
+const selectedDate = writable(luxon.DateTime.now().minus({ days: 1 }).toISODate())
+
 const loadAuth = () => {
 	if (!browser) return {}
 	return JSON.parse(localStorage.getItem("clockify_auth") || JSON.stringify({ token: "", workspace: "", user: "" }))
@@ -151,4 +153,4 @@ const convertCurrentEntriesToChunks = () => {
 	return entries
 }
 
-export { auth, loadTimeEntries, loadProjects, mappings, addMapping, deleteMapping, convertCurrentEntriesToChunks }
+export { auth, loadTimeEntries, loadProjects, mappings, addMapping, deleteMapping, convertCurrentEntriesToChunks, selectedDate }

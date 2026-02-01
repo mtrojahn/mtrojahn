@@ -5,11 +5,10 @@
 		loadTimeEntries,
 		loadProjects,
 		mappings,
-		convertCurrentEntriesToChunks
+		convertCurrentEntriesToChunks, selectedDate
 	} from "$lib/stores/ClockifyExportStore.js"
 	import { formatDuration } from "$lib/helpers/strings.js"
 
-	let query_date = luxon.DateTime.now().minus({ days: 1 }).toISODate()
 	let entries = []
 	let loading = false
 	let projects = []
@@ -20,11 +19,11 @@
 	}
 
 	async function handleDateChange() {
-		if (!query_date) return
+		if (!$selectedDate) return
 
 		loading = true
 		// Load both in parallel
-		const [entriesData, projectsData] = await Promise.all([loadTimeEntries(query_date), loadProjects()])
+		const [entriesData, projectsData] = await Promise.all([loadTimeEntries($selectedDate), loadProjects()])
 		entries = entriesData
 		projects = projectsData
 		loading = false
@@ -90,7 +89,7 @@
 <div class="d-flex flex-row justify-content-end" style="margin-bottom: 1rem;">
 	<input
 		type="date"
-		bind:value={query_date}
+		bind:value={$selectedDate}
 		on:change={handleDateChange}
 		class="form-control form-control-sm"
 		style="max-width: 300px" />
@@ -139,5 +138,5 @@
 		{/each}
 	</ul>
 {:else}
-	<p class="text-muted">No entries found for {query_date}</p>
+	<p class="text-muted">No entries found for {$selectedDate}</p>
 {/if}
