@@ -129,7 +129,6 @@ const loadProjects = async (forceRefresh = false) => {
 function splitIntoChunks(entry, chunkMinutes = 30) {
 	const start = luxon.DateTime.fromISO(entry.timeInterval.start, { zone: "utc" })
 	const end = luxon.DateTime.fromISO(entry.timeInterval.end, { zone: "utc" })
-	const chunkMs = chunkMinutes * 60 * 1000
 
 	const chunks = []
 	let current = start
