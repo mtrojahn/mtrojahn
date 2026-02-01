@@ -1,12 +1,11 @@
 <script>
 	import { base } from "$app/paths"
 
-	let myBase = `${base}/clockify-export`
 	let active_tab = 0
 
 	const tabs = [
-		{ href: `${myBase}/main`, name: "Clockify Data", order: 0 },
-		{ href: `${myBase}/settings`, name: "Settings", order: 2 }
+		{ href: `${base}/clockify-export/main`, name: "Clockify Data", order: 0 },
+		{ href: `${base}/clockify-export/settings`, name: "Settings", order: 2 }
 	]
 
 	const sortedTabs = tabs.slice().sort((a, b) => a.order - b.order)
@@ -25,7 +24,7 @@
 		<ul class="nav nav-tabs card-header-tabs">
 			{#each sortedTabs as { href, name }, index (index)}
 				<li class="nav-item">
-					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} {href}>
+					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} href={href}>
 						{name}
 					</a>
 				</li>

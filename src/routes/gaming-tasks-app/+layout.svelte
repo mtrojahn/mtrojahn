@@ -1,12 +1,11 @@
 <script>
 	import { base } from "$app/paths"
 
-	let myBase = `${base}/gaming-tasks-app`
 	let active_tab = 0
 
 	const tabs = [
-		{ href: `${myBase}/main`, name: "Tasks", order: 0 },
-		{ href: `${myBase}/settings`, name: "Settings", order: 1 }
+		{ href: `${base}/gaming-tasks-app/main`, name: "Tasks", order: 0 },
+		{ href: `${base}/gaming-tasks-app/settings`, name: "Settings", order: 1 }
 	]
 
 	const sortedTabs = tabs.slice().sort((a, b) => a.order - b.order)
@@ -25,7 +24,7 @@
 		<ul class="nav nav-tabs card-header-tabs">
 			{#each sortedTabs as { href, name }, index (index)}
 				<li class="nav-item">
-					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} {href}>
+					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} href={href}>
 						{name}
 					</a>
 				</li>
