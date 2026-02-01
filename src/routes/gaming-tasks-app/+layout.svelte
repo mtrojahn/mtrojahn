@@ -24,7 +24,7 @@
 		<ul class="nav nav-tabs card-header-tabs">
 			{#each sortedTabs as { href, name }, index (index)}
 				<li class="nav-item">
-					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} href={href}>
+					<a on:click={() => setActive(index)} class={index === active_tab ? "nav-link active" : "nav-link"} {href}>
 						{name}
 					</a>
 				</li>

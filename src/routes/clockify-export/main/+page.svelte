@@ -5,7 +5,8 @@
 		loadTimeEntries,
 		loadProjects,
 		mappings,
-		convertCurrentEntriesToChunks, selectedDate
+		convertCurrentEntriesToChunks,
+		selectedDate
 	} from "$lib/stores/ClockifyExportStore.js"
 	import { formatDuration } from "$lib/helpers/strings.js"
 
