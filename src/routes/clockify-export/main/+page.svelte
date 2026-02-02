@@ -13,6 +13,8 @@
 	let entries = []
 	let loading = false
 	let projects = []
+	let include_descriptions = false
+	let exported_data = ""
 
 	function getProjectName(projectId) {
 		const project = projects.find((p) => p.id === projectId)
@@ -21,6 +23,7 @@
 
 	async function handleDateChange() {
 		if (!$selectedDate) return
+		exported_data = ""
 
 		loading = true
 		// Load both in parallel
@@ -70,7 +73,8 @@
 			})
 		let tsv = parsed
 			.map((p) => {
-				const description = p.description ? "'" + p.description.replace(/\t/g, " ").replace(/\n/g, " ") : ""
+				const description =
+					include_descriptions && p.description ? "'" + p.description.replace(/\t/g, " ").replace(/\n/g, " ") : ""
 				const workType = p.mapping ? (p.mapping.work_type || "").replace(/\t/g, " ") : ""
 				const taskActivity = p.mapping ? (p.mapping.task_activity || "").replace(/\t/g, " ") : ""
 
@@ -78,6 +82,7 @@
 			})
 			.join("\n")
 		navigator.clipboard.writeText(tsv)
+		exported_data = tsv
 		showFadeOutMessage("Exported to clipboard!")
 	}
 
@@ -101,6 +106,12 @@
 {:else if entries.length > 0}
 	<div class="row mb-2">
 		<div class="d-flex flex-row justify-content-end">
+			<div class="me-2 pt-1">
+				<label>
+					<input type="checkbox" bind:checked={include_descriptions} />
+					Include Descriptions
+				</label>
+			</div>
 			<div>
 				<button class="btn btn-primary btn-sm" on:click={() => exportToExcel()}>Export to Excel (Clipboard)</button>
 			</div>
@@ -140,4 +151,11 @@
 	</ul>
 {:else}
 	<p class="text-muted">No entries found for {$selectedDate}</p>
+{/if}
+
+{#if exported_data}
+	<div class="mt-4">
+		<h6>This is how the exported data looks like:</h6>
+		<pre style="white-space: pre-wrap;">{exported_data}</pre>
+	</div>
 {/if}
