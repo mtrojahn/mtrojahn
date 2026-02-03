@@ -8,8 +8,7 @@
 		"preview": "vite preview",
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
-		"deploy": "gh-pages -d build -t"
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
@@ -19,7 +18,6 @@
 		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
-		"gh-pages": "^6.2.0",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.7",
 		"svelte": "^4.2.19",
