@@ -99,6 +99,9 @@
 		on:change={handleDateChange}
 		class="form-control form-control-sm"
 		style="max-width: 300px" />
+	<button class="btn btn-primary btn-sm ms-2" on:click={handleDateChange}>
+		<i class="fa fa-refresh" aria-hidden="true"></i>
+	</button>
 </div>
 
 {#if loading}
