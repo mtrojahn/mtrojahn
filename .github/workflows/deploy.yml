@@ -2,11 +2,11 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main']  # or whatever your default branch is
+    branches: ["main"] # or whatever your default branch is
 
 jobs:
   build_site:
-    runs-on: ubuntu-latest  # This is fine, you'll get priority as a custom job
+    runs-on: ubuntu-latest # This is fine, you'll get priority as a custom job
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,12 +20,12 @@ jobs:
         run: npm install
 
       - name: Build site
-        run: npm run build  # This should output to 'dist' or 'build'
+        run: npm run build # This should output to 'dist' or 'build'
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build'  # Change to your build output folder (dist, build, public, etc.)
+          path: "build" # Change to your build output folder (dist, build, public, etc.)
 
   deploy:
     needs: build_site
