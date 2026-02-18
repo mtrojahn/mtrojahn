@@ -1,5 +1,6 @@
 <script>
 	import { base } from "$app/paths"
+	import ButtonBar from "$lib/components/ButtonBar.svelte"
 
 	let active_tab = 0
 
@@ -15,9 +16,14 @@
 	}
 </script>
 
-<h3>
-	Clockify Export <sup>(when you still use spreadsheets in 2026+)</sup>
-</h3>
+<div class="d-flex justify-content-between align-items-center mb-4">
+	<div>
+		<h3>Clockify Export</h3>
+	</div>
+	<div>
+		<ButtonBar />
+	</div>
+</div>
 
 <div class="card mt-4">
 	<div class="card-header">
