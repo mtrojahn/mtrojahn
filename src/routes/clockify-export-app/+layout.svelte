@@ -5,8 +5,8 @@
 	let active_tab = 0
 
 	const tabs = [
-		{ href: `${base}/clockify-export/main`, name: "Clockify Data", order: 0 },
-		{ href: `${base}/clockify-export/settings`, name: "Settings", order: 2 }
+		{ href: `${base}/clockify-export-app/main`, name: "Clockify Data", order: 0 },
+		{ href: `${base}/clockify-export-app/settings`, name: "Settings", order: 2 }
 	]
 
 	const sortedTabs = tabs.slice().sort((a, b) => a.order - b.order)

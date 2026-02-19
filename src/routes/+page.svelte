@@ -4,7 +4,7 @@
 
 	const tools = [
 		{
-			href: `${base}/clockify-export/main`,
+			href: `${base}/clockify-export-app/main`,
 			title: "Clockify Export",
 			description: "Clockify Export Tool",
 			icon: "fa-clock",
