@@ -151,8 +151,43 @@ function splitIntoChunks(entry, chunkMinutes = 30) {
 }
 
 const convertCurrentEntriesToChunks = () => {
-	const entries = ENTRIES_CACHE.map((entry) => splitIntoChunks(entry)).flat()
-	return entries
+	const sorted = [...ENTRIES_CACHE].sort(
+		(a, b) => Date.parse(a.timeInterval.start) - Date.parse(b.timeInterval.start)
+	)
+
+	const chunks = []
+	let previousEnd = null
+
+	for (const entry of sorted) {
+		const start = luxon.DateTime.fromISO(entry.timeInterval.start, { zone: "utc" })
+		const end = luxon.DateTime.fromISO(entry.timeInterval.end, { zone: "utc" })
+
+		// fill gap before this entry
+		if (previousEnd && start > previousEnd) {
+			let gapCurrent = previousEnd
+
+			while (gapCurrent < start) {
+				const next = gapCurrent.plus({ minutes: 30 })
+				const gapEnd = next < start ? next : start
+
+				chunks.push({
+					description: "",
+					projectId: null,
+					start: gapCurrent,
+					end: gapEnd
+				})
+
+				gapCurrent = gapEnd
+			}
+		}
+
+		// split real entry
+		chunks.push(...splitIntoChunks(entry))
+
+		previousEnd = end
+	}
+
+	return chunks
 }
 
 export {
