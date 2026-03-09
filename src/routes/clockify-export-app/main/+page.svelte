@@ -74,7 +74,7 @@
 		let tsv = parsed
 			.map((p) => {
 				const description =
-					include_descriptions && p.description ? "'" + p.description.replace(/\t/g, " ").replace(/\n/g, " ") : ""
+					include_descriptions && p.description ? p.description.replace(/\t/g, " ").replace(/\n/g, " ") : ""
 				const workType = p.mapping ? (p.mapping.work_type || "").replace(/\t/g, " ") : ""
 				const taskActivity = p.mapping ? (p.mapping.task_activity || "").replace(/\t/g, " ") : ""
 

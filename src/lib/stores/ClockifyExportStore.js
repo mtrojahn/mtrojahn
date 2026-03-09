@@ -1,4 +1,4 @@
-import { writable } from "svelte/store"
+import { writable, get } from "svelte/store"
 import { browser } from "$app/environment"
 import * as luxon from "luxon"
 
@@ -59,6 +59,38 @@ const addMapping = (project_name, work_type, task_activity) => {
 		const sorted = [...mappings, newMapping].sort((a, b) => a.project_name.localeCompare(b.project_name))
 		localStorage.setItem("clockify_mappings", JSON.stringify(sorted))
 		return sorted
+	})
+}
+
+const loadURLMappings = () => {
+	if (!browser) return []
+	return JSON.parse(localStorage.getItem("clockify_url_mappings") || "[]")
+}
+
+const urlMappings = writable(loadURLMappings())
+
+urlMappings.subscribe((mappings) => {
+	if (!browser) return
+	localStorage.setItem("clockify_url_mappings", JSON.stringify(mappings))
+})
+
+const addURLMapping = (prefix, url) => {
+	urlMappings.update((mappings) => {
+		const newMapping = {
+			prefix: prefix.trim(),
+			url: url.trim()
+		}
+		const sorted = [...mappings, newMapping].sort((a, b) => a.prefix.localeCompare(b.prefix))
+		localStorage.setItem("clockify_url_mappings", JSON.stringify(sorted))
+		return sorted
+	})
+}
+
+const deleteURLMapping = (prefix) => {
+	urlMappings.update((mappings) => {
+		const updated = mappings.filter((m) => m.prefix !== prefix)
+		localStorage.setItem("clockify_url_mappings", JSON.stringify(updated))
+		return updated
 	})
 }
 
@@ -133,14 +165,19 @@ function splitIntoChunks(entry, chunkMinutes = 30) {
 	const chunks = []
 	let current = start
 
-	console.log({entry, start, end})
-
 	while (current < end) {
 		const next = current.plus({ minutes: chunkMinutes })
 		const chunkEnd = next < end ? next : end
 
 		// description can be split with the | sign. If there are multiple parts, only the first one is used for all chunks.
-		const description = entry.description.split("|")[0].trim()
+		let description = entry.description.split("|")[0].trim()
+		// need to check if description now matches items in urlMappings
+		const urlMapping = get(urlMappings).find((m) => description.startsWith(m.prefix))
+		if (urlMapping) {
+			description = '=HYPERLINK("' + urlMapping.url + '", "' + description + '")'
+		} else {
+			description = "'" + description
+		}
 
 		chunks.push({
 			description: description,
@@ -156,9 +193,7 @@ function splitIntoChunks(entry, chunkMinutes = 30) {
 }
 
 const convertCurrentEntriesToChunks = () => {
-	const sorted = [...ENTRIES_CACHE].sort(
-		(a, b) => Date.parse(a.timeInterval.start) - Date.parse(b.timeInterval.start)
-	)
+	const sorted = [...ENTRIES_CACHE].sort((a, b) => Date.parse(a.timeInterval.start) - Date.parse(b.timeInterval.start))
 
 	const chunks = []
 	let previousEnd = null
@@ -203,5 +238,8 @@ export {
 	addMapping,
 	deleteMapping,
 	convertCurrentEntriesToChunks,
-	selectedDate
+	selectedDate,
+	addURLMapping,
+	urlMappings,
+	deleteURLMapping
 }

@@ -1,5 +1,13 @@
 <script>
-	import { auth, mappings, addMapping, deleteMapping } from "$lib/stores/ClockifyExportStore.js"
+	import {
+		auth,
+		mappings,
+		urlMappings,
+		addMapping,
+		addURLMapping,
+		deleteMapping,
+		deleteURLMapping
+	} from "$lib/stores/ClockifyExportStore.js"
 
 	let confs = $auth
 
@@ -12,9 +20,14 @@
 		})
 	}
 	$: all_mappings = $mappings
+	$: all_url_mappings = $urlMappings
+
 	let new_project_name = ""
 	let new_work_type = ""
 	let new_task_activity = ""
+
+	let new_task_prefix = ""
+	let new_task_url = ""
 </script>
 
 <h6>Data Mappings</h6>
@@ -60,6 +73,51 @@
 					<td>{mapping.task_activity}</td>
 					<td class="text-end">
 						<button type="button" class="btn btn-danger btn-sm" on:click={() => deleteMapping(mapping.project_name)}>
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+</div>
+
+<hr />
+<h6>URL Mappings</h6>
+<div class="d-flex flex-row justify-content-end">
+	<input
+		type="text"
+		class="form-control form-control-sm"
+		placeholder="Prefix"
+		bind:value={new_task_prefix}
+		style="max-width: 200px" />
+	<input
+		type="text"
+		class="form-control form-control-sm ms-3"
+		placeholder="URL"
+		bind:value={new_task_url}
+		style="max-width: 400px" />
+	<button
+		type="button"
+		class="btn btn-primary btn-sm ms-3"
+		on:click={() => addURLMapping(new_task_prefix, new_task_url)}>
+		<i class="fa fa-plus" aria-hidden="true"></i>
+	</button>
+</div>
+<div class="row mx-1 mt-4">
+	<table class="table table-striped">
+		<tr>
+			<th scope="col">Task Prefix</th>
+			<th scope="col">URL</th>
+			<th scope="col" style="width: 100px"></th>
+		</tr>
+		<tbody>
+			{#each all_url_mappings as mapping}
+				<tr>
+					<td>{mapping.prefix}</td>
+					<td>{mapping.url}</td>
+					<td class="text-end">
+						<button type="button" class="btn btn-danger btn-sm" on:click={() => deleteURLMapping(mapping.prefix)}>
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</button>
 					</td>
