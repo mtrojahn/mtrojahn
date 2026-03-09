@@ -133,12 +133,17 @@ function splitIntoChunks(entry, chunkMinutes = 30) {
 	const chunks = []
 	let current = start
 
+	console.log({entry, start, end})
+
 	while (current < end) {
 		const next = current.plus({ minutes: chunkMinutes })
 		const chunkEnd = next < end ? next : end
 
+		// description can be split with the | sign. If there are multiple parts, only the first one is used for all chunks.
+		const description = entry.description.split("|")[0].trim()
+
 		chunks.push({
-			description: entry.description,
+			description: description,
 			projectId: entry.projectId,
 			start: current,
 			end: chunkEnd

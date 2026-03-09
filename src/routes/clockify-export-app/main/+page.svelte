@@ -13,7 +13,7 @@
 	let entries = []
 	let loading = false
 	let projects = []
-	let include_descriptions = false
+	let include_descriptions = true
 	let exported_data = ""
 
 	function getProjectName(projectId) {
