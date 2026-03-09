@@ -174,7 +174,7 @@ function splitIntoChunks(entry, chunkMinutes = 30) {
 		// need to check if description now matches items in urlMappings
 		const urlMapping = get(urlMappings).find((m) => description.startsWith(m.prefix))
 		if (urlMapping) {
-			description = '=HYPERLINK("' + urlMapping.url + '", "' + description + '")'
+			description = '=HYPERLINK("' + urlMapping.url + description + '", "' + description + '")'
 		} else {
 			description = "'" + description
 		}
