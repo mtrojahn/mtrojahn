@@ -13,7 +13,7 @@
 	let entries = []
 	let loading = false
 	let projects = []
-	let include_descriptions = true
+	let include_descriptions = "links" // options: "none", "links", "full"
 	let exported_data = ""
 
 	function getProjectName(projectId) {
@@ -73,8 +73,14 @@
 			})
 		let tsv = parsed
 			.map((p) => {
-				const description =
-					include_descriptions && p.description ? p.description.replace(/\t/g, " ").replace(/\n/g, " ") : ""
+				let description = ""
+				if (include_descriptions === "full" && p.description) {
+					description = p.description.replace(/\t/g, " ").replace(/\n/g, " ")
+				} else if (include_descriptions === "links" && p.description?.startsWith("=HYPERLINK")) {
+					description = p.description.replace(/\t/g, " ").replace(/\n/g, " ")
+				}
+				// else: include_descriptions === "none" or doesn't match links condition, description stays ""
+
 				const workType = p.mapping ? (p.mapping.work_type || "").replace(/\t/g, " ") : ""
 				const taskActivity = p.mapping ? (p.mapping.task_activity || "").replace(/\t/g, " ") : ""
 
@@ -110,9 +116,13 @@
 	<div class="row mb-2">
 		<div class="d-flex flex-row justify-content-end">
 			<div class="me-2 pt-1">
-				<label>
-					<input type="checkbox" bind:checked={include_descriptions} />
-					Include Descriptions
+				<label class="me-2">
+					Descriptions:
+					<select bind:value={include_descriptions} class="form-select form-select-sm" style="display: inline-block; width: auto;">
+						<option value="none">None</option>
+						<option value="links">Only Links</option>
+						<option value="full">Full</option>
+					</select>
 				</label>
 			</div>
 			<div>
